@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Phantom by HTML5 UP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css')}}" type="text/css">
+    
+    <noscript><link rel="stylesheet" href="{{ url_for('static',filename='css/noscript.css')}}" /></noscript>
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+                <header id="header">
+                    <div class="inner">
+                            <a href="{{ url_for('home')}}" class="logo">
+                                <span class="symbol"><img src="{{ url_for('static',filename='images/logo.svg')}}" alt="" /></span><span class="title">KETO HELPER</span>
+                            </a>
+                            <!-- <nav>
+                                <ul>
+                                    <li><a href="#menu">Menu</a></li>
+                                </ul>
+                            </nav> -->
+                    </div>
+                </header>
+
+            <!-- Menu -->
+                <nav id="menu">
+                    <h2>Menu</h2>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        {% for nav_item in nav %}
+                        <li><a href="{{nav_item.url}}"> {{nav_item.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>

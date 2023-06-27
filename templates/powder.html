@@ -1,0 +1,48 @@
+
+{% include 'header.html' %}
+<div id="main">
+	<div class="inner">
+		<h1>Common Keto baking powder</h1>
+		<section>
+			<h2>常見生酮烘焙粉類</h2>
+			<div class="table-wrapper">
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>English</th>
+							<th>Carb(%)</th>
+							<th>Fat(%)</th>
+							<th>Fiber(%)</th>
+							<th>Description</th>
+							<th>Usage Suggestion</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for powder in powders %}
+						<tr>
+							<td> {{ powder.name_cn }}</td>
+							<td> {{ powder.name_en }} </td>
+							<td> {{ powder.carb }} </td>
+                            <td> {{ powder.fat }} </td>
+                            <td> {{ powder.fiber }} </td>
+                            <td> {{ powder.description }} </td>
+                            <td> {{ powder.suggestion }} </td>
+						</tr>
+						{% endfor %}
+						
+					</tbody>
+					<tfoot>
+						<tr>
+							<!-- <td colspan="2"></td> -->
+							<td colspan="12">For reference only.</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+{% include 'footer.html' %}

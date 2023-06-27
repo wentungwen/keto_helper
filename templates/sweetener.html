@@ -1,0 +1,43 @@
+{% include 'header.html' %}
+<div id="main">
+	<div class="inner">
+		<h1>Sweeteners</h1>
+		<section>
+			<h2>常見生酮代糖（也包含正常糖類方便做比較）</h2>
+			<div class="table-wrapper">
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>English</th>
+							<th>Sweetness</th>
+							<th>Glycemic Index</th>
+							<th>Natural</th>
+							<th>Aftertaste</th>
+							<th>Cost</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for sweetener in sweeteners %}
+						<tr>
+							<td>{{ sweetener.name_cn }}</td>
+							<td>{{ sweetener.name_en }}</td>
+							<td>{{ sweetener.sweetness }}</td>
+							<td>{{ sweetener.gi }}</td>
+							<td>{{ sweetener.is_natural }}</td>
+							<td>{{ sweetener.aftertaste }}</td>
+							<td>{{ sweetener.cost }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">For reference only.</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</section>
+	</div>
+</div>
+{% include 'footer.html' %}

@@ -1,0 +1,32 @@
+{% include "header.html" %}
+<!-- Main -->
+<div id="main">
+	<div class="inner">
+		<header>
+			<h1>Welcome to Keto Helper</h1>
+			<p>You will found several useful tooks and information for Keto Diet.</p>
+		</header>
+		<section class="tiles">
+		{% for nav_item in nav %}
+			<article class="style1">
+				<span class="image">
+					<img src="{{ url_for('static', filename='images/{}'.format(nav_item.img)) }}" alt="{{ nav_item.title }}" />
+
+				</span>
+				<a href="{{ nav_item.url }}">
+					<h2>{{ nav_item.title }}</h2>
+					<div class="content">
+						<p>{{ nav_item.description }}</p>
+					</div>
+				</a>
+			</article>
+		{% endfor %}
+
+			
+			
+		</section>
+	</div>
+</div>
+
+{% include "footer.html" %}
+

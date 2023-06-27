@@ -1,0 +1,52 @@
+
+{% include 'header.html' %}
+<div id="main">
+	<div class="inner">
+		<h1>Common Keto Oil</h1>
+		<section>
+			<h2>常見生酮油品</h2>
+			<div class="table-wrapper">
+				<table>
+					<thead>
+						<tr>
+							<th>Chinese Name</th>
+							<th>English Name</th>
+							<th>Omega 3 (%)</th>
+							<th>Omega 6 (%)</th>
+							<th>Omega 9 (%)</th>
+							<th>3/6 ratio</th>
+							<th>Saturated Fat (/100g)</th>
+							<th>Smoky Point (˚C)</th>
+							<th>Cooking Methods</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for oil in oils %}
+						<tr>
+							<td> {{ oil.name_cn }}</td>
+							<td> {{ oil.name_en }} </td>
+							<td> {{ oil.omega3 }} </td>
+							<td> {{ oil.omega6 }} </td>
+							<td> {{ oil.omega9 }} </td>
+							<td> 1/{{ (oil.omega3 / oil.omega6) | round(2) }} </td>
+							<td> {{ oil.sat_fat }} </td>
+							<td> {{ oil.smoky_p }} </td>
+							<td> {{ oil.cooking_m }} </td>
+						</tr>
+						{% endfor %}
+						
+					</tbody>
+					<tfoot>
+						<tr>
+							<!-- <td colspan="2"></td> -->
+							<td colspan="12">For reference only.</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+{% include 'footer.html' %}
