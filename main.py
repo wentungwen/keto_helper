@@ -1,7 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-import math
 import openpyxl
 
 app = Flask(__name__)
@@ -30,7 +29,8 @@ class Sweetener(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name_cn = db.Column(db.String(100), nullable=True)
     name_en = db.Column(db.String(100), nullable=True)
-    sweetness= db.Column(db.Integer, nullable=False)
+    sweetness_min= db.Column(db.Numeric(precision=2, scale=1), nullable=True)
+    sweetness_max= db.Column(db.Numeric(precision=2, scale=1), nullable=True)
     gi = db.Column(db.Integer, nullable=True)
     is_natural = db.Column(db.Boolean, nullable=True)
     aftertaste = db.Column(db.String(100), nullable=True)
@@ -48,28 +48,8 @@ class Powder(db.Model):
     suggestion = db.Column(db.String(100), nullable=True)
 
 
-def write_to_database(item_name, item_db):
-    wb = openpyxl.load_workbook('data/keto project.xlsx')
-    ws = wb[item_name]
-    items = [row for row in ws.values]
-    item_title = items[0]
-
-    for item_list in items[1:]:
-        n_obj = item_db()  
-        if n_obj.query.filter_by(name_en=item_list[1]).first():
-            print(123123)
-        else:
-            for idx, n in enumerate(item_list):
-                print(item_title[idx], n)
-                setattr(n_obj, item_title[idx], n)
-            db.session.add(n_obj)
-            db.session.commit()
-            db.session.close()
-
-
-
-@app.route('/')
-def home():
+@app.context_processor
+def inject_nav():
     nav = [
         {
             'title': 'oil table',
@@ -96,7 +76,32 @@ def home():
             'img': 'powder.jpg'
         }
     ]
-    return render_template('index.html', nav=nav)
+    return {'nav': nav}
+
+
+def write_to_database(item_name, item_db):
+    wb = openpyxl.load_workbook('data/keto project.xlsx')
+    ws = wb[item_name]
+    items = [row for row in ws.values]
+    item_title = items[0]
+
+    for item_list in items[1:]:
+        n_obj = item_db()  
+        if n_obj.query.filter_by(name_en=item_list[1]).first():
+            print(123123)
+        else:
+            for idx, n in enumerate(item_list):
+                
+                print(item_title[idx], n)
+                setattr(n_obj, item_title[idx], n)
+            db.session.add(n_obj)
+            db.session.commit()
+            db.session.close()
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 
 @app.route('/oil-table')
@@ -111,9 +116,28 @@ def sweetener():
     return render_template('sweetener.html', sweeteners=sweeteners)
 
 
-@app.route('/sweetener-calculator')
-def sweetener_cal():
-    return render_template('sweetener_calculator.html')
+@app.route('/get-sweetener', methods=['POST', 'GET'])
+def get_sweetener():
+    if request.method == 'GET':
+        sweeteners = Sweetener.query.all()
+        data = [{
+            'id': sweetener.id,
+            'name_cn': sweetener.name_cn,
+            'name_en': sweetener.name_en,
+            'sweetness_max': sweetener.sweetness_max,
+            'sweetness_min': sweetener.sweetness_min,
+            'gi': sweetener.gi,
+            'is_natural': sweetener.is_natural,
+            'aftertaste': sweetener.aftertaste,
+            'cost': sweetener.cost
+        } for sweetener in sweeteners]
+        return jsonify(data=data)
+
+
+@app.route('/sweetener-calculator', methods=['POST', 'GET'])
+def sweetener_calculator_page():
+    sweeteners = Sweetener.query.all()
+    return render_template('sweetener_calculator.html', sweeteners=sweeteners)
 
 
 @app.route('/powder-table')
@@ -122,9 +146,12 @@ def powder():
     return render_template('powder.html', powders=powders)
 
 
+
+
 # with app.app_context():
+#     db.create_all()
 #     write_to_database('oil', item_db=Oil)
-#     write_to_database('sweetner', item_db=Sweetner)
+#     write_to_database('sweetener', item_db=Sweetener)
 #     write_to_database('powder', item_db=Powder)
 
 
