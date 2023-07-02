@@ -1,10 +1,45 @@
-
+{% include 'header.html' %}
 
 <div id="main">
 	<div class="inner">
-		<h1>sweet</h1>
-
+		<h1>Sweeteners Calculators </h1>
+		<section>
+			<h2>生酮代糖計算機</h2>
+			<div class="table-wrapper">
+				<h3>單一代糖換算</h3>
+				<div class="input-sweet">
+					<select id="sweetener-input-select" class="field-half">
+						{% for nav_item in sweeteners %}
+							<option value="{{ nav_item.id }}">{{ nav_item.name_cn }}</option>
+						{% endfor %}
+					</select>
+					<input type="number" min="0" step="1" value="100"> g
+					<div class="sweetness">
+						<div class="sweetness-proportion">
+							<span id="sweetness-input-value"></span>
+						</div>
+						<a class="input-adjust" href="#">修改</a>
+				    </div>
+				</div>
+				<br>
+				<div class="output-sweet">
+					<select id="sweetener-output-select">
+						{% for nav_item in sweeteners %}
+							<option value="{{ nav_item.id }}">{{ nav_item.name_cn }}</option>
+						{% endfor %}
+					</select>
+					<div class="sweetness">
+						<div class="sweetness-proportion">
+							<span id="sweetness-output-value"></span>
+							
+						</div>
+						<b class="result"></b>
+						
+						<!-- <a href="#">修改</a> -->
+				    </div>
+				</div>
+			</div>
+		</section>
 	</div>
 </div>
-
-				
+{% include 'footer.html' %}
